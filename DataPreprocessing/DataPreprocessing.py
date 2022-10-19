@@ -1,6 +1,6 @@
 import pandas as pd
 
-ames_housing = pd.read_csv("AmesHousing.csv", na_values='?')
+ames_housing = pd.read_csv("../AmesHousing.csv", na_values='?')
 ames_housing = ames_housing.drop(columns="PID")
 
 ames_housing.head()
