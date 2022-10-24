@@ -12,7 +12,7 @@ if __name__ == "__main__":
     data.drop(['PID', 'Order'], axis=1, inplace=True)
 
     """
-    Ben's columns
+    Ben's columns 21-40
     """
     roof_style_mapper = {'Flat': 0, 'Gable': 1, 'Gambrel': 2, 'Hip': 3, 'Mansard': 4, 'Shed': 5}
     data['Roof Style'].replace(roof_style_mapper, inplace=True)
@@ -64,7 +64,26 @@ if __name__ == "__main__":
     data['Heating'].replace(heating_mapper, inplace=True)
 
     """
-    Gabe's columns
+    Gabe's columns 41-60
+    """
+    Dict = dict({"GasA": 0, "Wall": 1, "Grav": 2, "GasW": 3, "Floor": 4, "OthW": 5})
+    data.replace({"Heating": Dict}, inplace=True)
+    Dict = dict({"Fa": 0, "TA": 1, "Ex": 2, "Gd": 3, "Po": 4, "NA": 5})
+    data.replace({"Heating QC": Dict}, inplace=True)
+    data.replace({"Kitchen Qual": Dict}, inplace=True)
+    data.replace({"Fireplace Qu": Dict}, inplace=True)
+    Dict = dict({"Y": 0, "N": 1})
+    data.replace({"Central Air": Dict}, inplace=True)
+    Dict = dict({"SBrkr": 0, "FuseA": 1, "FuseF": 2, "FuseP": 3, "Mix": 4})
+    data.replace({"Electrical": Dict}, inplace=True)
+    Dict = dict({"Attchd": 0, "BuiltIn": 1, "Basment": 2, "Detchd": 3, "NA": 4, "BuiltIn": 5, "CarPort": 6, "2Types": 7,
+                 "Sal": 8, "Sev": 9, "Typ": 10, "Mod": 11, "Min1": 12, "Min2": 13, "Maj1": 14, "Maj2": 15},
+                inplace=True)
+    data.replace({"Garage Type": Dict}, inplace=True)
+    data.replace({"Functional": Dict}, inplace=True)
+
+    """
+    Mariela's columns 61-80
     """
 
     # Fill in missing values
