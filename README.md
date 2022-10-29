@@ -8,7 +8,11 @@ Our project for data mining in CIS 4930 at Florida State University
 **data_description.txt**: Describes what the values in AmesHousing's features mean
 
 **DataPreprocessing**
+
 |
+
 |---- **dataCleaning.py**: Code that cleans the AmesHousing.csv
+
 |
+
 |---- **datacleaning.md**: Markdown file describing changes made for the data cleaning process
