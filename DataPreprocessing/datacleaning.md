@@ -26,6 +26,7 @@ The reason for each change is documented per feature changed
     - 5: RL	Residential Low Density
     - 6: RP	Residential Low Density Park 
     - 7: RM	Residential Medium Density
+<<<<<<< Updated upstream
 
 ### Bens Features Changed
 - **Roof Style**: `string` --> `int`
@@ -161,3 +162,70 @@ The reason for each change is documented per feature changed
   - 3: Grav
   - 4: OthW
   - 5: Wall
+=======
+- CONTINUE FROM HERE
+**Garage Qual**: Garage quality 
+<!-- Not sure how this differs from Garage Cond so it could possibly be dropped? they are rated on the same scale?? -->
+  - remapped from 0-5 for each value
+    - 0: Ex	Excellent
+    - 1: Gd	Good
+    - 2: TA	Typical/Average
+    - 3: Fa	Fair
+    - 4: Po	Poor
+    - 5: NA	No Garage
+**Garage Cond**: Garage condition
+  - remapped from 0-5 for each value
+    - 0: Ex	Excellent
+    - 1: Gd	Good
+    - 2: TA	Typical/Average
+    - 3: Fa	Fair
+    - 4: Po	Poor
+    - 5: NA	No Garage		
+**Paved Drive**: Paved driveway
+  - remapped from 0-2 for each value
+    - 0: Y	Paved 
+    - 1: P	Partial Pavement
+    - 2: N	Dirt/Gravel
+**Pool QC**: Pool quality
+  - remapped from 0-4 for each value
+    - 0: Ex	Excellent
+    - 1: Gd	Good
+    - 2: TA	Average/Typical
+    - 3: Fa	Fair
+    - 4: NA	No Pool
+**Fence**: Fence quality
+  - remapped from 0-4 for each value
+    - 0: GdPrv	Good Privacy
+    - 1: MnPrv	Minimum Privacy
+    - 2: GdWo   Good Wood
+    - 3: MnWw   Minimum Wood/Wire
+    - 4: NA	    No Fence
+**Misc Feature**: Miscellaneous feature not covered in other categories
+  - remapped from 0-5 for each value
+    - 0: Elev	Elevator
+    - 1: Gar2	2nd Garage (if not described in garage section)
+    - 2: Othr	Other
+    - 3: Shed	Shed (over 100 SF)
+    - 4: TenC	Tennis Court
+    - 5: NA	  None
+**Sale Type**: Type of sale
+  - remapped from 0-9 for each value
+    - 0: WD 	Warranty Deed - Conventional
+    - 1: CWD	Warranty Deed - Cash
+    - 2: VWD	Warranty Deed - VA Loan
+    - 3: New	Home just constructed and sold
+    - 4: COD	Court Officer Deed/Estate
+    - 5: Con	Contract 15% Down payment regular terms
+    - 6: ConLw	Contract Low Down payment and low interest
+    - 7: ConLI	Contract Low Interest
+    - 8: ConLD	Contract Low Down
+    - 9: Oth	Other
+**Sale Condition**:Condition of sale
+  - remapped from 0-6 for each value
+    - 0: Normal   Normal Sale
+    - 1: Abnorml	Abnormal Sale -  trade, foreclosure, short sale
+    - 3: AdjLand	Adjoining Land Purchase
+    - 4: Alloca	  Allocation - two linked properties with separate deeds, typically condo with a garage unit	
+    - 5: Family	  Sale between family members
+    - 6: Partial	Home was not completed when last assessed (associated with New Homes)
+>>>>>>> Stashed changes

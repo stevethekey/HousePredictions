@@ -6,6 +6,7 @@ pd.options.display.max_columns = None
 
 if __name__ == "__main__":
     # set data = the csv file
+<<<<<<< Updated upstream
     data = pd.read_csv('AmesHousing.csv')
 
     # Cleaning the Data. Documented in Dataprocessing/datacleaning.md
@@ -92,3 +93,39 @@ if __name__ == "__main__":
 
     # Write the file
     data.to_csv('cleaned.csv', index=False)
+=======
+    data = pd.read_csv('DataPreprocessing/dupAmesHousing.csv') 
+    # data = pd.read_csv('dupAmesHousing.csv')
+    # Cleaning the Data. Documented in Dataprocessing/datacleaning.md
+    data.drop(['PID'], axis=1, inplace=True)
+    
+    # Write the file
+    # data.to_csv('benTest.csv', index=False)
+
+    # last 20 enumerations using dict and replace
+    Dict = dict({"Ex": 0, "Gd": 1, "TA": 2, "Fa": 3, "Po": 4, "NA": 5})
+    data.replace({"Garage Qual": Dict, "Garage Cond": Dict}, inplace=True)
+
+    Dict = dict({"Y": 0, "P": 1, "N": 2})
+    data.replace({"Paved Drive": Dict}, inplace=True)
+
+    Dict = dict({"Ex": 0, "Gd": 1, "TA": 2, "Fa": 3, "NA": 4})
+    data.replace({"Pool QC": Dict}, inplace=True)
+
+    Dict = dict({"GdPrv": 0, "MnPrv": 1, "GdWo": 2, "MnWw": 3, "NA": 4})
+    data.replace({"Fence": Dict}, inplace=True)
+
+    Dict = dict({"Elev": 0, "Gar2": 1, "Othr": 2, "Shed": 3, "TenC": 4, "NA": 5})
+    data.replace({"Misc Feature": Dict}, inplace=True)
+
+    Dict = dict({"CWD": 1, "WD ": 0, "VWD": 2, "New": 3, "COD": 4, "Con": 5, "ConLw": 6, "ConLI": 7, "ConLD": 8, "Oth": 9})
+    data.replace({"Sale Type": Dict}, inplace=True)
+
+    Dict = dict({"Normal": 0, "Abnorml": 1, "AdjLand": 3, "Alloca": 4, "Family": 5, "Partial": 6})
+    data.replace({"Sale Condition": Dict}, inplace=True)
+
+    values = {"Garage Qual": 5, "Garage Cond": 5, "Pool QC": 4, "Fence": 4, "Misc Feature": 5} # to fill NA values
+    data.fillna(value=values, inplace=True)
+
+    data.to_csv('benTest.csv', index=False) # write changes to new file
+>>>>>>> Stashed changes
