@@ -82,21 +82,22 @@ Neighborhood: Physical locations within Ames city limits
 
        Blmngtn	Bloomington Heights
        Blueste	Bluestem
-       BrDale	Briardale
+       BrDale	       Briardale
        BrkSide	Brookside
        ClearCr	Clear Creek
        CollgCr	College Creek
        Crawfor	Crawford
        Edwards	Edwards
        Gilbert	Gilbert
-       IDOTRR	Iowa DOT and Rail Road
+       IDOTRR	       Iowa DOT and Rail Road
        MeadowV	Meadow Village
        Mitchel	Mitchell
        Names	North Ames
        NoRidge	Northridge
        NPkVill	Northpark Villa
        NridgHt	Northridge Heights
-       NWAmes	Northwest Ames
+       NWAmes	       Northwest Ames
+       #'NAMES'        was found in the database. Most likely a typo to "NWAmes", referring to Norwest Ames
        OldTown	Old Town
        SWISU	South & West of Iowa State University
        Sawyer	Sawyer
@@ -105,6 +106,8 @@ Neighborhood: Physical locations within Ames city limits
        StoneBr	Stone Brook
        Timber	Timberland
        Veenker	Veenker
+
+       #'Greens'       was found multuple times in the database. It's unsure what this one refers to. Possibly a neighbor that has the word green in it.
 			
 Condition1: Proximity to various conditions
 	
@@ -137,6 +140,8 @@ BldgType: Type of dwelling
        Duplx	Duplex
        TwnhsE	Townhouse End Unit
        TwnhsI	Townhouse Inside Unit
+
+       #'Twnhs' was found in database. Unsure what the typo was reffering too. Perhaps end unit or inside unit was not known
 	
 HouseStyle: Style of dwelling
 	
