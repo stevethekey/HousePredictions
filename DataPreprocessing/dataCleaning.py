@@ -1,5 +1,3 @@
-from dataclasses import replace
-from pickle import FALSE, TRUE
 import pandas as pd
 import warnings
 
@@ -11,26 +9,20 @@ if __name__ == "__main__":
     data = pd.read_csv('AmesHousing.csv')
 
     # Cleaning the Data. Documented in Dataprocessing/datacleaning.md
-    data.drop(['PID', 'Order'], axis=1, inplace=True)
-
-   
 
     """
     Steven's 1-20th columns
-    (exlcuding PID and Order)
     """
-    
-    
-    ms_zoning_mapper = {'A': 0, 'C': 1, 'FV': 2, 'I': 3, 'RH': 4, 'RL': 5, 'RP': 6, 'RM': 7}
-    data['MS Zoning'].replace(ms_zoning_mapper, inplace=True)
+    data.drop(['PID', 'Order'], axis=1, inplace=True)
 
+    ms_zoning_mapper = {'A': 0, 'C': 1, 'C (all)': 1, 'FV': 2, 'I': 3, 'I (all)': 3, 'RH': 4, 'RL': 5, 'RP': 6, 'RM': 7}
+    data['MS Zoning'].replace(ms_zoning_mapper, inplace=True)
 
     driveway_type_mapper = {'Grvl': 0, 'Pave': 1}
     data['Street'].replace(driveway_type_mapper, inplace=True)
 
     alley_type_mapper = {'Grvl': 0, 'Pave': 1, 'NA': 2}
     data['Alley'].replace(alley_type_mapper, inplace=True)
-
 
     lot_shape_mapper = {'Reg': 0, 'IR1': 1, 'IR2': 2, 'IR3': 3}
     data['Lot Shape'].replace(lot_shape_mapper, inplace=True)
@@ -69,7 +61,6 @@ if __name__ == "__main__":
 
     """
     Ben's columns 21-40
-
     """
    
     roof_style_mapper = {'Flat': 0, 'Gable': 1, 'Gambrel': 2, 'Hip': 3, 'Mansard': 4, 'Shed': 5}
@@ -167,25 +158,16 @@ if __name__ == "__main__":
 
     values = {"Garage Qual": 5, "Garage Cond": 5, "Pool QC": 4, "Fence": 4, "Misc Feature": 5} # to fill NA values
     data.fillna(value=values, inplace=True)
-    
 
     # Fill in missing values
     for column in data.columns:
         data[column].fillna(data[column].mode()[0], inplace=True)
-        
 
     # Write the file
     data.to_csv('cleaned.csv', index=False)
 
 
-
-
-    
-    
-
-
     """
-    
     code to check if every attribute is a string. not finished
 
     data_clean = pd.read_csv('cleaned.csv')
@@ -199,5 +181,3 @@ if __name__ == "__main__":
 
     - steve
     """
-
-    
