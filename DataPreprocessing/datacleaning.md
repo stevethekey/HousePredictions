@@ -26,7 +26,7 @@ The reason for each change is documented per feature changed
     - 5: RL	Residential Low Density
     - 6: RP	Residential Low Density Park 
     - 7: RM	Residential Medium Density
-<<<<<<< Updated upstream
+
 
 ### Bens Features Changed
 - **Roof Style**: `string` --> `int`
@@ -162,8 +162,7 @@ The reason for each change is documented per feature changed
   - 3: Grav
   - 4: OthW
   - 5: Wall
-=======
-- CONTINUE FROM HERE
+
 **Garage Qual**: Garage quality 
 <!-- Not sure how this differs from Garage Cond so it could possibly be dropped? they are rated on the same scale?? -->
   - remapped from 0-5 for each value
@@ -228,4 +227,3 @@ The reason for each change is documented per feature changed
     - 4: Alloca	  Allocation - two linked properties with separate deeds, typically condo with a garage unit	
     - 5: Family	  Sale between family members
     - 6: Partial	Home was not completed when last assessed (associated with New Homes)
->>>>>>> Stashed changes

@@ -6,7 +6,6 @@ pd.options.display.max_columns = None
 
 if __name__ == "__main__":
     # set data = the csv file
-<<<<<<< Updated upstream
     data = pd.read_csv('AmesHousing.csv')
 
     # Cleaning the Data. Documented in Dataprocessing/datacleaning.md
@@ -86,23 +85,6 @@ if __name__ == "__main__":
     """
     Mariela's columns 61-80
     """
-
-    # Fill in missing values
-    for column in data.columns:
-        data[column].fillna(data[column].mode()[0], inplace=True)
-
-    # Write the file
-    data.to_csv('cleaned.csv', index=False)
-=======
-    data = pd.read_csv('DataPreprocessing/dupAmesHousing.csv') 
-    # data = pd.read_csv('dupAmesHousing.csv')
-    # Cleaning the Data. Documented in Dataprocessing/datacleaning.md
-    data.drop(['PID'], axis=1, inplace=True)
-    
-    # Write the file
-    # data.to_csv('benTest.csv', index=False)
-
-    # last 20 enumerations using dict and replace
     Dict = dict({"Ex": 0, "Gd": 1, "TA": 2, "Fa": 3, "Po": 4, "NA": 5})
     data.replace({"Garage Qual": Dict, "Garage Cond": Dict}, inplace=True)
 
@@ -127,5 +109,9 @@ if __name__ == "__main__":
     values = {"Garage Qual": 5, "Garage Cond": 5, "Pool QC": 4, "Fence": 4, "Misc Feature": 5} # to fill NA values
     data.fillna(value=values, inplace=True)
 
-    data.to_csv('benTest.csv', index=False) # write changes to new file
->>>>>>> Stashed changes
+    # Fill in missing values
+    for column in data.columns:
+        data[column].fillna(data[column].mode()[0], inplace=True)
+
+    # Write the file
+    data.to_csv('cleaned.csv', index=False)
