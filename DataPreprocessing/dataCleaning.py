@@ -15,7 +15,7 @@ if __name__ == "__main__":
     """
     data.drop(['PID', 'Order'], axis=1, inplace=True)
 
-    ms_zoning_mapper = {'A': 0, 'C': 1, 'C (all)': 1, 'FV': 2, 'I': 3, 'I (all)': 3, 'RH': 4, 'RL': 5, 'RP': 6, 'RM': 7}
+    ms_zoning_mapper = {'A': 0, 'A (agr)': 0, 'C': 1, 'C (all)': 1, 'FV': 2, 'I': 3, 'I (all)': 3, 'RH': 4, 'RL': 5, 'RP': 6, 'RM': 7}
     data['MS Zoning'].replace(ms_zoning_mapper, inplace=True)
 
     driveway_type_mapper = {'Grvl': 0, 'Pave': 1}
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     neighborhood_mapper = {'Blmngtn': 0, 'Blueste': 1, 'BrDale': 2, 'BrkSide': 3, 'ClearCr': 4, 'CollgCr': 5,
     'Crawfor': 6, 'Edwards': 7, 'Gilbert': 8, 'IDOTRR': 9, 'MeadowV': 10, 'Mitchel': 11, 'Names': 12, 'NoRidge': 13,
     'NPkVill': 14, 'NridgHt': 15, 'NWAmes': 16, 'NAmes': 16, 'OldTown': 17, 'SWISU': 18, 'Sawyer': 19, 'SawyerW': 20, 'Somerst': 21,
-    'StoneBr': 22, 'Timber': 23, 'Veenker':24, 'Greens': 25}
+    'StoneBr': 22, 'Timber': 23, 'Veenker':24, 'Greens': 25, 'GrnHill': 26, 'Landmrk': 27}
     data['Neighborhood'].replace(neighborhood_mapper, inplace= True)
 
     first_condition_mapper = {'Artery': 0, 'Feedr': 1, 'Norm': 2, 'RRNn': 3, 'RRAn': 4, 'PosN': 5, 'PosA':6, 'RRNe': 7, 'RRAe': 8}
@@ -112,6 +112,9 @@ if __name__ == "__main__":
     heating_mapper = {'Floor': 0, 'GasA': 1, 'GasW': 2, 'Grav': 3, 'OthW': 4, 'Wall': 5}
     data['Heating'].replace(heating_mapper, inplace=True)
 
+    garage_finish_mapper = {'Fin': 0, 'RFn': 1, 'Unf': 2, 'NA': 3}
+    data['Garage Finish'].replace(garage_finish_mapper, inplace=True)
+
     """
     Gabe's columns 41-60
     """
@@ -163,9 +166,22 @@ if __name__ == "__main__":
     for column in data.columns:
         data[column].fillna(data[column].mode()[0], inplace=True)
 
+    # Remove Correlated Features
+    correlated_features = set()
+    correlation_matrix = data.drop('SalePrice', axis=1).corr()
+
+    for i in range(len(correlation_matrix.columns)):
+        for j in range(i):
+            if abs(correlation_matrix.iloc[i, j]) > 0.8:
+                colname = correlation_matrix.columns[i]
+                correlated_features.add(colname)
+
+    print(correlated_features)
+    for feature in correlated_features:
+        data.drop(feature, axis=1, inplace=True)
+
     # Write the file
     data.to_csv('cleaned.csv', index=False)
-
 
     """
     code to check if every attribute is a string. not finished
