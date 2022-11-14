@@ -13,4 +13,4 @@ Our project for data mining in CIS 4930 at Florida State University
 |  
 |---- **datacleaning.md**: Markdown file describing changes made for the data cleaning process  
 \
-**Fisher Score.py** :  Implements fisher score feature selection
+**FisherScore.py** :  Implements fisher score feature selection
