@@ -17,7 +17,11 @@ if __name__ == "__main__":
     score = fisher_score.fisher_score(X, Y)
 
     feat_importances = pd.Series(score, data.columns[0:len(data.columns)-1])
-    feat_importances.plot(kind='barh', color='teal')
+    df = feat_importances[score].astype(float).nlargest(20)
+    df.plot(kind = 'barh', color = 'teal')
+    f = plt.gcf()
+    f.set_size_inches(10, 10)
+    f.savefig('top20_features_fisher.png', dpi=600)
     plt.show()
 
     
