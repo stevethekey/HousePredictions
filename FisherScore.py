@@ -20,9 +20,6 @@ from the median, top 25 and top 75
 '''
 
 if __name__ == "__main__":
-    train = pd.read_csv('cleaned.csv')
-    test = train
-    test.drop(['SalePrice'], axis=1, inplace=True)
     data = pd.read_csv('cleaned.csv')
     array = data.values
     X= array[:, 0:(len(data.columns)-1)]
