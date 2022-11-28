@@ -9,27 +9,27 @@ from sklearn import metrics
 
 def intersection_top90(test, data):
     
-    list_top90 = data['features'].to_string(index=False);
-    newTest = test;
-    newColumns = [];
-    newTrain = [];
+    list_top90 = data['features'].to_string(index=False)
+    newTest = test
+    newColumns = []
+    newTrain = []
     # print(test.columns);
     # print(len(test.columns));
     # print(test.columns[71]);
     for i in range(64):
-        col = test.columns[i];
+        col = test.columns[i]
         # print(i);
         # print(col);
         if col in list_top90:
-            count=0;
+            count=0
         else:
-            newTest.drop(labels=col, axis=1, inplace=True);
-            newColumns.append(col);
+            newTest.drop(labels=col, axis=1, inplace=True)
+            newColumns.append(col)
             
     # print(newTest);
     # print(newColumns);
 
-    return newTest, newColumns;
+    return newTest, newColumns
 
     # loop through test, if column found in data good, else drop
 
@@ -51,8 +51,8 @@ if __name__ == "__main__":
     feature_df = pd.DataFrame(feature_dict).sort_values(by='f_score', ascending=False).reset_index(drop=True)
     ##table to be used in reporting stage
     
-    percent90 = (math.floor(len(feature_df)*.9));
-    df_X_train = pd.DataFrame(X_train, columns=X.columns);
+    percent90 = (math.floor(len(feature_df)*.9))
+    df_X_train = pd.DataFrame(X_train, columns=X.columns)
     # print(df_X_train);
     # df_X_train.drop(labels="MS SubClass", axis=1, inplace=True);
     # print(df_X_train);
@@ -77,10 +77,10 @@ if __name__ == "__main__":
     # else:
     #     print("no!");
 
-    newTrain, newColumns = intersection_top90(df_X_train, df_top20);
+    newTrain, newColumns = intersection_top90(df_X_train, df_top20)
     # newXTrain = pd.DataFrame(newTrain, columns=newColumns);
-    print(newTrain);
-    print(newTrain.columns);
+    print(newTrain)
+    print(newTrain.columns)
 
     df_top20 = df_top20.reset_index(drop=True)
     df_top20.reset_index(drop=True, inplace=True)
