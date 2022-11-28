@@ -4,12 +4,16 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.feature_selection import f_regression
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+import math
+from sklearn import metrics 
 
 if __name__ == "__main__":
     data = pd.read_csv("cleaned.csv")
     X = data.copy()
     del X['SalePrice']
     Y = data['SalePrice']
+    my_model = RandomForestRegressor(n_estimators = 300, max_depth = 6)
     X_train, X_test, y_train, y_test = train_test_split (X.to_numpy(), Y.to_numpy(), test_size = 0.33, random_state =42)
     ####lines 17-20 were obtained from 
     # https://towardsdatascience.com/application-of-feature-selection-techniques-in-a-regression-problem-4278e2efd503
@@ -30,5 +34,16 @@ if __name__ == "__main__":
     fig = plt.figure()
     boxplot = feature_df.boxplot(column = 'f_score')
     fig.savefig("BoxPlotforF_score.png")
+    r2_score_for_base = np.zeros(10)
+    normalized_root_mean_squared_error_base = np.zeros(10)
+    for i in range(0, 10, 1):
+        my_model.fit(X_train, y_train)
+        y_pred = my_model.predict(X_test)
+        r2_score_for_base[i] = metrics.r2_score(y_test, y_pred)
+        normalized_root_mean_squared_error_base[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+
+    avg_r2_score_for_base = np.mean(r2_score_for_base)
+    avg_RMSENORM_base = np.mean(normalized_root_mean_squared_error_base)
+    print ("Avg R2 Score for no feature selection", avg_r2_score_for_base)
+    print ("Average Root Mean Squared Error (Normalized",avg_RMSENORM_base)
     
-    ###need to generate visuals for Univariate feature selection 
