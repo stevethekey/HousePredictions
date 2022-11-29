@@ -52,7 +52,7 @@ if __name__ == "__main__":
     df_top20 = feature_df.iloc[0:percent90]
 
 
-    newTest, newTrain = intersection_top90(df_X_train, df_X_test, df_top20) 
+    newTest, newTrain = intersection_top90(df_X_test, df_X_train, df_top20) 
     # newXTrain = pd.DataFrame(newTrain, columns=newColumns) 
     print(newTrain) 
     print(newTest)
