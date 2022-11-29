@@ -7,28 +7,23 @@ from sklearn.ensemble import RandomForestRegressor
 import math
 from sklearn import metrics 
 
-def intersection_top90(test, data):
+def intersection_top90(test, train, data):
     
     list_top90 = data['features'].to_string(index=False) 
     newTest = test.copy(deep=True) 
-    newColumns = [] 
-    newTrain = [] 
-    # print("the test\n", test)
-    # print(test.columns) 
-    # print(len(test.columns)) 
-    # print(test.columns[71]) 
- 
+    newTrain = train.copy(deep=True);
+
     for i in range(len(test.columns)):
         col = test.columns[i] 
-        print(i) 
-        print(col) 
         if col not in list_top90:
             newTest.drop(labels=col, axis=1, inplace=True) 
-            
-    # print(newTest) 
-    # print(newColumns) 
+    
+    for i in range(len(train.columns)):
+        col = train.columns[i] 
+        if col not in list_top90:
+            newTrain.drop(labels=col, axis=1, inplace=True) 
 
-    return newTest, newColumns 
+    return newTest, newTrain 
 
     # loop through test, if column found in data good, else drop
 
@@ -52,34 +47,15 @@ if __name__ == "__main__":
     
     percent90 = (math.floor(len(feature_df)*.9)) 
     df_X_train = pd.DataFrame(X_train, columns=X.columns) 
-    # print(df_X_train) 
-    # df_X_train.drop(labels="MS SubClass", axis=1, inplace=True) 
-    # print(df_X_train) 
-    # print(len(df_X_train.columns)) 
-    print(df_X_train.columns[0]) 
-    # print(df_X_train["MS Zoning"].to_numpy()) 
-    
-    # if "MS Zoning" in df_X_train.columns:
-    #     print("yes") 
-    # else:
-    #     print("no") 
+    df_X_test = pd.DataFrame(X_test, columns=X.columns)
 
     df_top20 = feature_df.iloc[0:percent90]
-    # newTrain = [] 
-    # print(newTrain) 
-    # list_top20 = df_top20['features'].to_string(index=False) 
-    # newTrain.append(df_X_train["MS Zoning"].to_numpy()) 
-    # print(newTrain) 
 
-    # if "Overall Qual" in list_top20:
-    #     print("yes") 
-    # else:
-    #     print("no!") 
 
-    newTrain, newColumns = intersection_top90(df_X_train, df_top20) 
+    newTest, newTrain = intersection_top90(df_X_train, df_X_test, df_top20) 
     # newXTrain = pd.DataFrame(newTrain, columns=newColumns) 
     print(newTrain) 
-    print(newTrain.columns) 
+    print(newTest)
 
     df_top20 = df_top20.reset_index(drop=True)
     df_top20.reset_index(drop=True, inplace=True)
