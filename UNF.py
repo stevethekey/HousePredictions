@@ -9,27 +9,26 @@ from sklearn import metrics
 
 def intersection_top90(test, data):
     
-    list_top90 = data['features'].to_string(index=False);
-    newTest = test;
-    newColumns = [];
-    newTrain = [];
-    # print(test.columns);
-    # print(len(test.columns));
-    # print(test.columns[71]);
-    for i in range(64):
-        col = test.columns[i];
-        # print(i);
-        # print(col);
-        if col in list_top90:
-            count=0;
-        else:
-            newTest.drop(labels=col, axis=1, inplace=True);
-            newColumns.append(col);
+    list_top90 = data['features'].to_string(index=False) 
+    newTest = test.copy(deep=True) 
+    newColumns = [] 
+    newTrain = [] 
+    # print("the test\n", test)
+    # print(test.columns) 
+    # print(len(test.columns)) 
+    # print(test.columns[71]) 
+ 
+    for i in range(len(test.columns)):
+        col = test.columns[i] 
+        print(i) 
+        print(col) 
+        if col not in list_top90:
+            newTest.drop(labels=col, axis=1, inplace=True) 
             
-    # print(newTest);
-    # print(newColumns);
+    # print(newTest) 
+    # print(newColumns) 
 
-    return newTest, newColumns;
+    return newTest, newColumns 
 
     # loop through test, if column found in data good, else drop
 
@@ -51,36 +50,36 @@ if __name__ == "__main__":
     feature_df = pd.DataFrame(feature_dict).sort_values(by='f_score', ascending=False).reset_index(drop=True)
     ##table to be used in reporting stage
     
-    percent90 = (math.floor(len(feature_df)*.9));
-    df_X_train = pd.DataFrame(X_train, columns=X.columns);
-    # print(df_X_train);
-    # df_X_train.drop(labels="MS SubClass", axis=1, inplace=True);
-    # print(df_X_train);
-    # print(len(df_X_train.columns));
-    # print(df_X_train.columns[0]);
-    # print(df_X_train["MS Zoning"].to_numpy());
+    percent90 = (math.floor(len(feature_df)*.9)) 
+    df_X_train = pd.DataFrame(X_train, columns=X.columns) 
+    # print(df_X_train) 
+    # df_X_train.drop(labels="MS SubClass", axis=1, inplace=True) 
+    # print(df_X_train) 
+    # print(len(df_X_train.columns)) 
+    print(df_X_train.columns[0]) 
+    # print(df_X_train["MS Zoning"].to_numpy()) 
     
     # if "MS Zoning" in df_X_train.columns:
-    #     print("yes");
+    #     print("yes") 
     # else:
-    #     print("no");
+    #     print("no") 
 
     df_top20 = feature_df.iloc[0:percent90]
-    # newTrain = [];
-    # print(newTrain);
-    # list_top20 = df_top20['features'].to_string(index=False);
-    # newTrain.append(df_X_train["MS Zoning"].to_numpy());
-    # print(newTrain);
+    # newTrain = [] 
+    # print(newTrain) 
+    # list_top20 = df_top20['features'].to_string(index=False) 
+    # newTrain.append(df_X_train["MS Zoning"].to_numpy()) 
+    # print(newTrain) 
 
     # if "Overall Qual" in list_top20:
-    #     print("yes");
+    #     print("yes") 
     # else:
-    #     print("no!");
+    #     print("no!") 
 
-    newTrain, newColumns = intersection_top90(df_X_train, df_top20);
-    # newXTrain = pd.DataFrame(newTrain, columns=newColumns);
-    print(newTrain);
-    print(newTrain.columns);
+    newTrain, newColumns = intersection_top90(df_X_train, df_top20) 
+    # newXTrain = pd.DataFrame(newTrain, columns=newColumns) 
+    print(newTrain) 
+    print(newTrain.columns) 
 
     df_top20 = df_top20.reset_index(drop=True)
     df_top20.reset_index(drop=True, inplace=True)
