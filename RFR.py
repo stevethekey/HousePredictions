@@ -1,12 +1,15 @@
+"""
+Random Forest Regressor without any feature selection
+"""
 import numpy as np
 import pandas as pd
 import warnings
 
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.feature_selection import RFECV
 from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import train_test_split
 from math import sqrt
+import matplotlib.pyplot as plt
 
 warnings.filterwarnings('ignore')
 pd.options.display.max_columns = None
@@ -25,6 +28,14 @@ if __name__ == "__main__":
     rfr.fit(X_train, y_train)
     y_predicted = rfr.predict(X_test)
 
+    plt.scatter(y_test, y_predicted, color='blue')
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.title('Random Forest Regression with no feature selection')
+    plt.xlabel('Actual Sales Price')
+    plt.ylabel('Predicted Sales Price')
+    plt.show()
+
     error = sqrt(mean_squared_error(y_test, y_predicted))
-    normalized_error = error/(max(y_predicted) - min(y_predicted))
+    normalized_error = error/(max(y_test) - min(y_test))
     print(normalized_error)
