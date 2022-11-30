@@ -77,18 +77,19 @@ if __name__ == "__main__":
     newTest_30, newTrain_30 = intersection_top_pct(df_X_test, df_X_train, df_top30)
     newTest_20, newTrain_20 = intersection_top_pct(df_X_test, df_X_train, df_top20)
     newTest_10, newTrain_10 = intersection_top_pct(df_X_test, df_X_train, df_top10)
-    '''
+    
     df_top20 = df_top20.reset_index(drop=True)
     df_top20.reset_index(drop=True, inplace=True)
     df_top20.plot(kind = 'barh', color='teal')
     f = plt.gcf()
     f.set_size_inches(10, 10)
     f.savefig('Top20Features.png', dpi=600)
+
     feature_df.to_csv("UNF_selection.csv")
     fig = plt.figure()
     boxplot = feature_df.boxplot(column = 'f_score')
     fig.savefig("BoxPlotforF_score.png")
-    '''
+    
     normalized_root_mean_squared_error_base = np.zeros(10)
     normalized_root_mean_squared_error_feat90 = np.zeros(10)
     normalized_root_mean_squared_error_feat80 = np.zeros(10)
@@ -107,6 +108,17 @@ if __name__ == "__main__":
         normalized_root_mean_squared_error_base[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
     avg_RMSENORM_base = np.mean(normalized_root_mean_squared_error_base)
     print ("Average Root Mean Squared Error (Normalized)",avg_RMSENORM_base)
+
+    fig1 = plt.figure('Base Feature Selection')
+    plt.scatter(y_pred, y_test)
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.xlabel('Predicted Value')
+    plt.ylabel('Actual Value')
+    plt.title('Base Feature Selection')
+    fig1.set_size_inches(10, 10)
+    fig1.savefig("UNF_BASE.png", dpi = 600)
+
 
     for i in range(0, 10, 1):
         my_model.fit(newTrain_90.to_numpy(), y_train)
@@ -164,6 +176,16 @@ if __name__ == "__main__":
     if (abs(avg_RMSENORM_feat40-avg_RMSENORM_base) <= 0.001):
         print ("Optimal")
     print ("Average Root Mean Squared Error of top 40 percent of features (Normalized)",avg_RMSENORM_feat40)
+    
+    fig2 = plt.figure('Top 40 percent Feature Selection')
+    plt.scatter(y_pred, y_test)
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.xlabel('Predicted Value')
+    plt.ylabel('Actual Value')
+    plt.title('Top 40 percent Feature Selection')
+    fig2.set_size_inches(10, 10)
+    fig2.savefig("UNF_optimal.png", dpi = 600)
 
     for i in range (0, 10, 1):
         my_model.fit(newTrain_30.to_numpy(), y_train)
@@ -172,7 +194,7 @@ if __name__ == "__main__":
     avg_RMSENORM_feat30 = np.mean(normalized_root_mean_squared_error_feat30)
     if (abs(avg_RMSENORM_feat30-avg_RMSENORM_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 30 percent of features (Normalized)",avg_RMSENORM_feat40)
+    print ("Average Root Mean Squared Error of top 30 percent of features (Normalized)",avg_RMSENORM_feat30)
 
     for i in range (0, 10, 1):
         my_model.fit(newTrain_20.to_numpy(), y_train)
@@ -190,6 +212,15 @@ if __name__ == "__main__":
     avg_RMSENORM_feat10 = np.mean(normalized_root_mean_squared_error_feat10)
     if (abs(avg_RMSENORM_feat10-avg_RMSENORM_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 10 percent of features (Normalized)",avg_RMSENORM_feat20)
+    print ("Average Root Mean Squared Error of top 10 percent of features (Normalized)",avg_RMSENORM_feat10)
 
 
+    fig3 = plt.figure('Top 10 percent features')
+    plt.scatter(y_pred, y_test)
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.xlabel('Predicted Value')
+    plt.ylabel('Actual Value')
+    plt.title('Top 10 Percent')
+    fig3.set_size_inches(10, 10)
+    fig3.savefig("UNF_10.png", dpi = 600)
