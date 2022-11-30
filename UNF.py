@@ -4,14 +4,16 @@ import matplotlib.pyplot as plt
 from sklearn.feature_selection import f_regression
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.neighbors import KNeighborsRegressor
 import math
+import UNF_KNN
 from sklearn import metrics 
 
 def intersection_top_pct(test, train, data):
     
     list_top90 = data['features'].to_string(index=False) 
     newTest = test.copy(deep=True) 
-    newTrain = train.copy(deep=True);
+    newTrain = train.copy(deep=True)
 
     for i in range(len(test.columns)):
         col = test.columns[i] 
@@ -100,7 +102,6 @@ if __name__ == "__main__":
     normalized_root_mean_squared_error_feat30 = np.zeros(10)
     normalized_root_mean_squared_error_feat20 = np.zeros(10)
     normalized_root_mean_squared_error_feat10 = np.zeros(10)
-
 
     for i in range(0, 10, 1):
         my_model.fit(X_train, y_train)
@@ -224,3 +225,105 @@ if __name__ == "__main__":
     plt.title('Top 10 Percent')
     fig3.set_size_inches(10, 10)
     fig3.savefig("UNF_10.png", dpi = 600)
+
+
+    K = UNF_KNN.getOptimalK()
+
+    for i in range(0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(X_train, y_train)
+        y_pred = my_model.predict(X_test)
+        normalized_root_mean_squared_error_base[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_base = np.mean(normalized_root_mean_squared_error_base)
+    print ("Average Root Mean Squared Error (Normalized) base",avg_RMSENORM_base)
+    
+
+    for i in range(0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_90, y_train)
+        y_pred = my_model.predict(newTest_90)
+        normalized_root_mean_squared_error_feat90[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat90 = np.mean(normalized_root_mean_squared_error_feat90)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat90) <= 0.001 ):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 90",avg_RMSENORM_feat90)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_80, y_train)
+        y_pred = my_model.predict(newTest_80)
+        normalized_root_mean_squared_error_feat80[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat80 = np.mean(normalized_root_mean_squared_error_feat80)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat80) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 80",avg_RMSENORM_feat80)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_70, y_train)
+        y_pred = my_model.predict(newTest_70)
+        normalized_root_mean_squared_error_feat70[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat70 = np.mean(normalized_root_mean_squared_error_feat70)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat70) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 70",avg_RMSENORM_feat70)
+
+    for i in range(0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_60, y_train)
+        y_pred = my_model.predict(newTest_60)
+        normalized_root_mean_squared_error_feat60[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat60 = np.mean(normalized_root_mean_squared_error_feat60)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat60) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 60",avg_RMSENORM_feat60)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_50, y_train)
+        y_pred = my_model.predict(newTest_50)
+        normalized_root_mean_squared_error_feat50[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat50 = np.mean(normalized_root_mean_squared_error_feat50)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat50) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 50",avg_RMSENORM_feat50)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_40, y_train)
+        y_pred = my_model.predict(newTest_40)
+        normalized_root_mean_squared_error_feat40[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat40 = np.mean(normalized_root_mean_squared_error_feat40)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat40) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 40",avg_RMSENORM_feat40)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_30,y_train)
+        y_pred = my_model.predict(newTest_30)
+        normalized_root_mean_squared_error_feat30[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat30 = np.mean(normalized_root_mean_squared_error_feat30)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat30) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 30",avg_RMSENORM_feat30)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_20, y_train)
+        y_pred = my_model.predict(newTest_20)
+        normalized_root_mean_squared_error_feat20[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat20 = np.mean(normalized_root_mean_squared_error_feat20)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat20) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 20",avg_RMSENORM_feat20)
+
+    for i in range (0, 10, 1):
+        my_model = KNeighborsRegressor(n_neighbors = K)
+        my_model.fit(newTrain_10, y_train)
+        y_pred = my_model.predict(newTest_10)
+        normalized_root_mean_squared_error_feat10[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    avg_RMSENORM_feat10 = np.mean(normalized_root_mean_squared_error_feat10)
+    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat10) <= 0.001):
+        print("Optimal")
+    print ("Average Root Mean Squared Error (Normalized) top 10",avg_RMSENORM_feat10)
