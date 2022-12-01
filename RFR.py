@@ -28,6 +28,11 @@ if __name__ == "__main__":
     rfr.fit(X_train, y_train)
     y_predicted = rfr.predict(X_test)
 
+    # Normalized error
+    error = sqrt(mean_squared_error(y_test, y_predicted))
+    normalized_error = error/(max(y_test) - min(y_test))
+    print(normalized_error)
+
     plt.scatter(y_test, y_predicted, color='blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
@@ -35,7 +40,3 @@ if __name__ == "__main__":
     plt.xlabel('Actual Sales Price')
     plt.ylabel('Predicted Sales Price')
     plt.show()
-
-    error = sqrt(mean_squared_error(y_test, y_predicted))
-    normalized_error = error/(max(y_test) - min(y_test))
-    print(normalized_error)

@@ -1,17 +1,16 @@
 """
-K-Nearest Neighbor with Recursive Feature Elimination
-THIS CODE DOES NOT RUN BECAUSE KNN DOES NOT HAVE A PROPERTY FEATURE_IMPORTANCE THAT IS NEEDED FOR RFE
+Support Vector Regression with recursive feature elimination
 """
 import numpy as np
 import pandas as pd
 import warnings
 
 from sklearn.feature_selection import RFECV
-from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from math import sqrt
 import matplotlib.pyplot as plt
+from sklearn.svm import SVR
 
 warnings.filterwarnings('ignore')
 pd.options.display.max_columns = None
@@ -26,22 +25,8 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test = train_test_split(features.to_numpy(), target.to_numpy(), test_size=0.33,
                                                         random_state=42)
 
-    # Get optimal number of neighbors
-    neighbors = 3
-    norm_errors = np.ones(20)
-    while neighbors < 20:
-        knn = KNeighborsRegressor(n_neighbors=neighbors)
-        knn.fit(X_train, y_train)
-        y_predicted = knn.predict(X_test)
-        error = sqrt(mean_squared_error(y_test, y_predicted))
-        normalized_error = error / (max(y_test) - min(y_test))
-        norm_errors[neighbors] = normalized_error
-        neighbors += 1
-
-    optimal_neighbors = norm_errors.argmin()
-
     # RFE cross validation
-    rfecv = RFECV(estimator=KNeighborsRegressor(n_neighbors=optimal_neighbors), min_features_to_select=1, n_jobs=-1, scoring="r2")
+    rfecv = RFECV(estimator=SVR(kernel='linear'), min_features_to_select=1, n_jobs=-1, scoring="r2")
     rfecv.fit(X_train, y_train)
     y_predicted = rfecv.predict(X_test)
     features_dropped = 72 - len(features.columns[rfecv.support_])
@@ -50,14 +35,13 @@ if __name__ == "__main__":
     # Normalized error
     error = sqrt(mean_squared_error(y_test, y_predicted))
     normalized_error = error / (max(y_test) - min(y_test))
-    print('K-Nearest Neighbor is most optimal with {} neighbors and has a normalized error of {}'.format(
-        optimal_neighbors, normalized_error))
+    print('SVR with RFE: Normalized RMSE with {} features dropped: {}'.format(features_dropped, normalized_error))
 
     # Plotting
     plt.scatter(y_test, y_predicted, color='blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.title('K-Nearest Neighbor with Recursive Feature Elimination')
+    plt.title('Support Vector Regression with Recursive Feature Elimination\nNRMSE={}'.format(normalized_error))
     plt.xlabel('Actual Sales Price')
     plt.ylabel('Predicted Sales Price')
     plt.show()
