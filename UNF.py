@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
 import math
 from sklearn import metrics 
+import time
 
 def intersection_top_pct(test, train, data):
     
@@ -106,7 +107,10 @@ if __name__ == "__main__":
     
     RMSE_RFR = np.zeros(10)
 
+
+    tbt_rfr_base = time.time()
     my_model.fit(X_train, y_train)
+    tbt_rfr_end = time.time()
     y_pred = my_model.predict(X_test)
     normalized_root_mean_squared_error_base = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
     RMSE_RFR[0] = normalized_root_mean_squared_error_base
@@ -118,7 +122,7 @@ if __name__ == "__main__":
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Base Feature Selection RFR\nRoot Mean Squared Error (Normalized): {}'.format(normalized_root_mean_squared_error_base))
+    plt.title('Base Feature Selection RFR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_base, tbt_rfr_end - tbt_rfr_base))
     fig1.set_size_inches(10, 10)
     fig1.savefig("Graphs/UNF_BASE_RFR.png", dpi = 600)
     
@@ -162,7 +166,9 @@ if __name__ == "__main__":
         print ("Optimal")
     print ("Average Root Mean Squared Error of top 50 percent of features (Normalized)",normalized_root_mean_squared_error_feat50)
 
+    tbt_rfr_optimal = time.time()
     my_model.fit(newTrain_40.to_numpy(), y_train)
+    tbt_rfr_optimal_end = time.time()
     y_pred = my_model.predict(newTest_40.to_numpy())
     normalized_root_mean_squared_error_feat40 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
     RMSE_RFR[6] = normalized_root_mean_squared_error_feat40
@@ -170,13 +176,15 @@ if __name__ == "__main__":
         print ("Optimal")
     print ("Average Root Mean Squared Error of top 40 percent of features (Normalized)",normalized_root_mean_squared_error_feat40)
     
+
+   
     fig2 = plt.figure('Top 40 percent Feature Selection')
     plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Top 40 percent Feature Selection RFR\n Root Mean Squared Error (Normalized): {}'.format(normalized_root_mean_squared_error_feat40))
+    plt.title('Top 40 percent Feature Selection RFR\n Root Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat40, tbt_rfr_optimal_end - tbt_rfr_optimal))
     fig2.set_size_inches(10, 10)
     fig2.savefig("Graphs/UNF_optimal_RFR.png", dpi = 600)
 
@@ -196,7 +204,9 @@ if __name__ == "__main__":
         print ("Optimal")
     print ("Average Root Mean Squared Error of top 20 percent of features (Normalized)",normalized_root_mean_squared_error_feat20)
 
+    tbt_rfr_top10 =time.time()
     my_model.fit(newTrain_10.to_numpy(), y_train)
+    tbt_rfr_top_end = time.time()
     y_pred = my_model.predict(newTest_10.to_numpy())
     normalized_root_mean_squared_error_feat10 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
     RMSE_RFR[9] = normalized_root_mean_squared_error_feat10
@@ -204,14 +214,14 @@ if __name__ == "__main__":
         print ("Optimal")
     print ("Average Root Mean Squared Error of top 10 percent of features (Normalized)",normalized_root_mean_squared_error_feat10)
 
-    
+
     fig3 = plt.figure('Top 10 percent features')
     plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Top 10 Percent Feature Selection RFR\n Root Mean Square Error (Normalized) {}'.format(normalized_root_mean_squared_error_feat10))
+    plt.title('Top 10 Percent Feature Selection RFR\nRoot Mean Square Error (Normalized) {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat10,tbt_rfr_top_end-tbt_rfr_top10))
     fig3.set_size_inches(10, 10)
     fig3.savefig("Graphs/UNF_10_RFR.png", dpi = 600)
 
@@ -227,8 +237,10 @@ if __name__ == "__main__":
     print ("Support Vector Regressor")
     RMSE_SVR = np.zeros(10)
 
+    tbt_svc_base = time.time()
     my_model2 = SVR(kernel = 'linear')
     my_model2.fit(X_train, y_train)
+    tbt_svc_base_end = time.time()
     y_pred = my_model2.predict(X_test)
     normalized_root_mean_squared_error_base = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
     RMSE_SVR[0] = normalized_root_mean_squared_error_base
@@ -240,7 +252,7 @@ if __name__ == "__main__":
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}'.format(normalized_root_mean_squared_error_base))
+    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_base,  tbt_svc_base_end-tbt_svc_base))
     figSVRbase.set_size_inches(10, 10)
     figSVRbase.savefig("Graphs/UNF_BASE_SVR.png", dpi = 600)
 
@@ -292,8 +304,9 @@ if __name__ == "__main__":
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 40 percent of features",normalized_root_mean_squared_error_feat40)
 
-    
+    tbt_svc_optimal = time.time()
     my_model2.fit(newTrain_30.to_numpy(), y_train)
+    tbt_svc_otpimal_end = time.time()
     y_pred = my_model2.predict(newTest_30.to_numpy())
     normalized_root_mean_squared_error_feat30 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
     RMSE_SVR[7] = normalized_root_mean_squared_error_feat30
@@ -308,7 +321,7 @@ if __name__ == "__main__":
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}'.format(normalized_root_mean_squared_error_feat30))
+    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat30,  tbt_svc_otpimal_end-tbt_svc_optimal))
     fig4.set_size_inches(10, 10)
     fig4.savefig("Graphs/UNF_SVR_optimal.png", dpi = 600)
 
@@ -320,7 +333,9 @@ if __name__ == "__main__":
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 20 percent of features",normalized_root_mean_squared_error_feat20)
 
+    tbt_svc_top10 = time.time()
     my_model2.fit(newTrain_10.to_numpy(), y_train)
+    tbt_svc_top10_end = time.time()
     y_pred = my_model2.predict(newTest_10.to_numpy())
     normalized_root_mean_squared_error_feat10 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
     RMSE_SVR[9] = normalized_root_mean_squared_error_feat10
@@ -335,7 +350,7 @@ if __name__ == "__main__":
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}'.format(normalized_root_mean_squared_error_feat10))
+    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat10, tbt_svc_top10_end -tbt_svc_top10))
     fig5.set_size_inches(10, 10)
     fig5.savefig("Graphs/UNF_top10_SVR.png", dpi = 600)
     
