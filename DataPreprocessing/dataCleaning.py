@@ -8,8 +8,9 @@ if __name__ == "__main__":
     # set data = the csv file
     data = pd.read_csv('AmesHousing.csv')
 
-    # Cleaning the Data. Documented in Dataprocessing/datacleaning.md
-
+    # Cleaning the data
+    # If a feature is categorically described, we have to change each unique value to a number to represent it
+    # If a feature has a missing value, we fill in the missing value with the mode for that feature
     """
     Steven's 1-20th columns
     """
@@ -182,18 +183,3 @@ if __name__ == "__main__":
 
     # Write the file
     data.to_csv('cleaned.csv', index=False)
-
-    """
-    code to check if every attribute is a string. not finished
-
-    data_clean = pd.read_csv('cleaned.csv')
-
-    for column in data_clean.columns:
-        for attribute in data_clean[column]:
-            print("the attribute " + attribute + "'s type is " + type(attribute))
-
-            if(type(attribute) != int)
-                this means a problem is here
-
-    - steve
-    """
