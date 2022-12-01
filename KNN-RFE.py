@@ -1,5 +1,6 @@
 """
 K-Nearest Neighbor with Recursive Feature Elimination
+This file is DEFUNCT - we do not use it in our report
 THIS CODE DOES NOT RUN BECAUSE KNN DOES NOT HAVE A PROPERTY FEATURE_IMPORTANCE THAT IS NEEDED FOR RFE
 """
 import numpy as np

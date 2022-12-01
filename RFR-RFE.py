@@ -1,5 +1,6 @@
 """
 Random Forest Regressor with Recursive Feature Elimination
+implemented using built-ins
 """
 import numpy as np
 import pandas as pd
@@ -10,12 +11,11 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from math import sqrt
 import matplotlib.pyplot as plt
-
 warnings.filterwarnings('ignore')
 pd.options.display.max_columns = None
 
 if __name__ == "__main__":
-    # open the cleaned data
+    # Open the cleaned data
     data = pd.read_csv('cleaned.csv')
 
     # Create train and test files
@@ -34,13 +34,15 @@ if __name__ == "__main__":
     # Normalized error
     error = sqrt(mean_squared_error(y_test, y_predicted))
     normalized_error = error/(max(y_test) - min(y_test))
-    print('Normalized RMSE with {} features dropped: {}'.format(features_dropped, normalized_error))
+    # print('Normalized RMSE with {} features dropped: {}'.format(features_dropped, normalized_error))
 
     # Plotting
+    rfrRFE_plot = plt.figure()
     plt.scatter(y_test, y_predicted, color='blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.title('Random Forest Regression with Recursive Feature Elimination')
+    plt.title('Random Forest Regression with Recursive Feature Elimination\nOptimal Features: {}\nNormalized RMSE: {}'.format(len(features.columns)-features_dropped, normalized_error))
     plt.xlabel('Actual Sales Price')
     plt.ylabel('Predicted Sales Price')
-    plt.show()
+    rfrRFE_plot.set_size_inches(10, 10)
+    rfrRFE_plot.savefig('Graphs/RFR_RFE.png', dpi=600)

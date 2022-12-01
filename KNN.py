@@ -1,5 +1,6 @@
 """
 K-Nearest Neighbor without any feature selection
+This file is DEFUNCT - we do not use it in our report
 """
 import numpy as np
 import pandas as pd
