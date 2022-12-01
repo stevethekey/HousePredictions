@@ -29,7 +29,7 @@ if __name__ == "__main__":
     rfecv = RFECV(estimator=SVR(kernel='linear'), min_features_to_select=1, n_jobs=-1, scoring="r2")
     rfecv.fit(X_train, y_train)
     y_predicted = rfecv.predict(X_test)
-    features_dropped = 72 - len(features.columns[rfecv.support_])
+    features_dropped = len(features.columns) - len(features.columns[rfecv.support_])
     # print(features.columns[rfecv.support_])
 
     # Normalized error
