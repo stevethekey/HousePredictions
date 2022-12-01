@@ -4,9 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.feature_selection import f_regression
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
 import math
-import UNF_KNN
 from sklearn import metrics 
 
 def intersection_top_pct(test, train, data):
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     X = data.copy()
     del X['SalePrice']
     Y = data['SalePrice']
-    my_model = RandomForestRegressor(n_estimators = 300, max_depth = 6)
+    my_model = RandomForestRegressor(max_depth = 6)
     X_train, X_test, y_train, y_test = train_test_split (X.to_numpy(), Y.to_numpy(), test_size = 0.33, random_state =42)
 
     ####lines 17-20 were obtained from 
@@ -82,7 +81,7 @@ if __name__ == "__main__":
     
     df_top20 = df_top20.reset_index(drop=True)
     df_top20.reset_index(drop=True, inplace=True)
-    df_top20.plot(kind = 'barh', color='teal')
+    df_top20.plot(kind = 'barh', color='blue')
     f = plt.gcf()
     f.set_size_inches(10, 10)
     f.savefig('Top20Features.png', dpi=600)
@@ -92,238 +91,259 @@ if __name__ == "__main__":
     boxplot = feature_df.boxplot(column = 'f_score')
     fig.savefig("BoxPlotforF_score.png")
     
-    normalized_root_mean_squared_error_base = np.zeros(10)
-    normalized_root_mean_squared_error_feat90 = np.zeros(10)
-    normalized_root_mean_squared_error_feat80 = np.zeros(10)
-    normalized_root_mean_squared_error_feat70 = np.zeros(10)
-    normalized_root_mean_squared_error_feat60 = np.zeros(10)
-    normalized_root_mean_squared_error_feat50 = np.zeros(10)
-    normalized_root_mean_squared_error_feat40 = np.zeros(10)
-    normalized_root_mean_squared_error_feat30 = np.zeros(10)
-    normalized_root_mean_squared_error_feat20 = np.zeros(10)
-    normalized_root_mean_squared_error_feat10 = np.zeros(10)
+    normalized_root_mean_squared_error_base = 0
+    normalized_root_mean_squared_error_feat90 = 0
+    normalized_root_mean_squared_error_feat80 = 0
+    normalized_root_mean_squared_error_feat70 = 0
+    normalized_root_mean_squared_error_feat60 = 0
+    normalized_root_mean_squared_error_feat50 = 0
+    normalized_root_mean_squared_error_feat40 = 0
+    normalized_root_mean_squared_error_feat30 = 0
+    normalized_root_mean_squared_error_feat20 = 0
+    normalized_root_mean_squared_error_feat10 = 0
 
-    for i in range(0, 10, 1):
-        my_model.fit(X_train, y_train)
-        y_pred = my_model.predict(X_test)
-        normalized_root_mean_squared_error_base[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_base = np.mean(normalized_root_mean_squared_error_base)
-    print ("Average Root Mean Squared Error (Normalized)",avg_RMSENORM_base)
+    print ("Random Forest Regressor")
+    
+    RMSE_RFR = np.zeros(10)
 
+    my_model.fit(X_train, y_train)
+    y_pred = my_model.predict(X_test)
+    normalized_root_mean_squared_error_base = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_RFR[0] = normalized_root_mean_squared_error_base
+    print ("Root Mean Squared Error (Normalized)", normalized_root_mean_squared_error_base)
+    
     fig1 = plt.figure('Base Feature Selection')
-    plt.scatter(y_pred, y_test)
+    plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.xlabel('Predicted Value')
-    plt.ylabel('Actual Value')
-    plt.title('Base Feature Selection')
+    plt.xlabel('Actual Value')
+    plt.ylabel('Predicted Value')
+    plt.title('Base Feature Selection RFR\nRoot Mean Squared Error (Normalized): ',  normalized_root_mean_squared_error_base)
     fig1.set_size_inches(10, 10)
-    fig1.savefig("UNF_BASE.png", dpi = 600)
-
-
-    for i in range(0, 10, 1):
-        my_model.fit(newTrain_90.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_90.to_numpy())
-        normalized_root_mean_squared_error_feat90[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat90 = np.mean(normalized_root_mean_squared_error_feat90)
+    fig1.savefig("UNF_BASE_RFR.png", dpi = 600)
     
-    if (abs(avg_RMSENORM_feat90-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_90.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_90.to_numpy())
+    normalized_root_mean_squared_error_feat90= math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[1] = normalized_root_mean_squared_error_feat90
+    if (abs(normalized_root_mean_squared_error_feat90-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) of 90 percent of features(Normalized)",avg_RMSENORM_feat90)
+    print ("Average Root Mean Squared Error (Normalized) of 90 percent of features(Normalized)",normalized_root_mean_squared_error_feat90)
 
-    for i in range(0, 10, 1):
-        my_model.fit(newTrain_80.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_80.to_numpy())
-        normalized_root_mean_squared_error_feat80[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat80 = np.mean(normalized_root_mean_squared_error_feat80)
-    if (abs(avg_RMSENORM_feat80-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_80.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_80.to_numpy())
+    normalized_root_mean_squared_error_feat80 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[2] = normalized_root_mean_squared_error_feat80
+    if (abs(normalized_root_mean_squared_error_feat80-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 80 percent of features (Normalized)",avg_RMSENORM_feat80)
+    print ("Average Root Mean Squared Error of top 80 percent of features (Normalized)",normalized_root_mean_squared_error_feat80)
 
-
-    for i in range(0, 10, 1):
-        my_model.fit(newTrain_70.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_70.to_numpy())
-        normalized_root_mean_squared_error_feat70[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat70 = np.mean(normalized_root_mean_squared_error_feat70)
-    if (abs(avg_RMSENORM_feat70-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_70.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_70.to_numpy())
+    normalized_root_mean_squared_error_feat70 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[3] =  normalized_root_mean_squared_error_feat70
+    if (abs(normalized_root_mean_squared_error_feat70-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 70 percent of features (Normalized)",avg_RMSENORM_feat70)
+    print ("Average Root Mean Squared Error of top 70 percent of features (Normalized)",normalized_root_mean_squared_error_feat70)
 
+    my_model.fit(newTrain_60.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_60.to_numpy())
+    normalized_root_mean_squared_error_feat60 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[4] = normalized_root_mean_squared_error_feat60
+    if (abs(normalized_root_mean_squared_error_feat60-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error of top 60 percent of features (Normalized)",normalized_root_mean_squared_error_feat60)
     
-    for i in range (0, 10, 1):
-        my_model.fit(newTrain_60.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_60.to_numpy())
-        normalized_root_mean_squared_error_feat60[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat60 = np.mean(normalized_root_mean_squared_error_feat60)
-    if (abs(avg_RMSENORM_feat60-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_50.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_50.to_numpy())
+    normalized_root_mean_squared_error_feat50 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[5] = normalized_root_mean_squared_error_feat50
+    if (abs(normalized_root_mean_squared_error_feat50-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 60 percent of features (Normalized)",avg_RMSENORM_feat60)
-    
-    for i in range (0, 10, 1):
-        my_model.fit(newTrain_50.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_50.to_numpy())
-        normalized_root_mean_squared_error_feat50[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat50 = np.mean(normalized_root_mean_squared_error_feat50)
-    if (abs(avg_RMSENORM_feat50-avg_RMSENORM_base) <= 0.001):
-        print ("Optimal")
-    print ("Average Root Mean Squared Error of top 50 percent of features (Normalized)",avg_RMSENORM_feat50)
+    print ("Average Root Mean Squared Error of top 50 percent of features (Normalized)",normalized_root_mean_squared_error_feat50)
 
-    for i in range (0, 10, 1):
-        my_model.fit(newTrain_40.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_40.to_numpy())
-        normalized_root_mean_squared_error_feat40[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat40 = np.mean(normalized_root_mean_squared_error_feat40)
-    if (abs(avg_RMSENORM_feat40-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_40.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_40.to_numpy())
+    normalized_root_mean_squared_error_feat40 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[6] = normalized_root_mean_squared_error_feat40
+    if (abs(normalized_root_mean_squared_error_feat40-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 40 percent of features (Normalized)",avg_RMSENORM_feat40)
+    print ("Average Root Mean Squared Error of top 40 percent of features (Normalized)",normalized_root_mean_squared_error_feat40)
     
     fig2 = plt.figure('Top 40 percent Feature Selection')
-    plt.scatter(y_pred, y_test)
+    plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.xlabel('Predicted Value')
-    plt.ylabel('Actual Value')
-    plt.title('Top 40 percent Feature Selection')
+    plt.xlabel('Actual Value')
+    plt.ylabel('Predicted Value')
+    plt.title('Top 40 percent Feature Selection RFR\n Root Mean Squared Error (Normalized): ', normalized_root_mean_squared_error_feat40)
     fig2.set_size_inches(10, 10)
-    fig2.savefig("UNF_optimal.png", dpi = 600)
+    fig2.savefig("UNF_optimal_RFR.png", dpi = 600)
 
-    for i in range (0, 10, 1):
-        my_model.fit(newTrain_30.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_30.to_numpy())
-        normalized_root_mean_squared_error_feat30[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat30 = np.mean(normalized_root_mean_squared_error_feat30)
-    if (abs(avg_RMSENORM_feat30-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_30.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_30.to_numpy())
+    normalized_root_mean_squared_error_feat30 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[7] = normalized_root_mean_squared_error_feat30
+    if (abs(normalized_root_mean_squared_error_feat30-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 30 percent of features (Normalized)",avg_RMSENORM_feat30)
+    print ("Average Root Mean Squared Error of top 30 percent of features (Normalized)",normalized_root_mean_squared_error_feat30)
 
-    for i in range (0, 10, 1):
-        my_model.fit(newTrain_20.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_20.to_numpy())
-        normalized_root_mean_squared_error_feat20[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat20 = np.mean(normalized_root_mean_squared_error_feat20)
-    if (abs(avg_RMSENORM_feat20-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_20.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_20.to_numpy())
+    normalized_root_mean_squared_error_feat20 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[8] = normalized_root_mean_squared_error_feat20
+    if (abs(normalized_root_mean_squared_error_feat20-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 20 percent of features (Normalized)",avg_RMSENORM_feat20)
+    print ("Average Root Mean Squared Error of top 20 percent of features (Normalized)",normalized_root_mean_squared_error_feat20)
 
-    for i in range (0, 10, 1):
-        my_model.fit(newTrain_10.to_numpy(), y_train)
-        y_pred = my_model.predict(newTest_10.to_numpy())
-        normalized_root_mean_squared_error_feat10[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
-    avg_RMSENORM_feat10 = np.mean(normalized_root_mean_squared_error_feat10)
-    if (abs(avg_RMSENORM_feat10-avg_RMSENORM_base) <= 0.001):
+    my_model.fit(newTrain_10.to_numpy(), y_train)
+    y_pred = my_model.predict(newTest_10.to_numpy())
+    normalized_root_mean_squared_error_feat10 = math.sqrt(metrics.mean_squared_error(y_test, y_pred)) / ((y_test.max() - y_test.min()))
+    RMSE_RFR[9] = normalized_root_mean_squared_error_feat10
+    if (abs(normalized_root_mean_squared_error_feat10-normalized_root_mean_squared_error_base) <= 0.001):
         print ("Optimal")
-    print ("Average Root Mean Squared Error of top 10 percent of features (Normalized)",avg_RMSENORM_feat10)
+    print ("Average Root Mean Squared Error of top 10 percent of features (Normalized)",normalized_root_mean_squared_error_feat10)
 
-
+    
     fig3 = plt.figure('Top 10 percent features')
-    plt.scatter(y_pred, y_test)
+    plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.xlabel('Predicted Value')
-    plt.ylabel('Actual Value')
-    plt.title('Top 10 Percent')
+    plt.xlabel('Actual Value')
+    plt.ylabel('Predicted Value')
+    plt.title('Top 10 Percent Feature Selection RFR\n Root Mean Square Error (Normalized)', normalized_root_mean_squared_error_feat10)
     fig3.set_size_inches(10, 10)
-    fig3.savefig("UNF_10.png", dpi = 600)
+    fig3.savefig("UNF_10_RFR.png", dpi = 600)
 
+    RMSE_df_RFR = pd.DataFrame(RMSE_RFR)
+    RMSE_df_RFR.plot(kind = 'line', color = 'blue')
+    fig_RMSERFR = plt.gcf()
+    fig_RMSERFR.set_title("Normalized RMSE over Fraction of Features")
+    fig_RMSERFR.xlabel("Fraction of Features")
+    fig_RMSERFR.ylabel("RMSE (Normalized) ")
+    fig_RMSERFR.set_size_inches(10, 10)
+    fig_RMSERFR.savefig('RMSE_RFR.png', dpi = 600)
 
-    K = UNF_KNN.getOptimalK()
+    print ("Support Vector Regressor")
+    RMSE_SVR = np.zeros(10)
 
-    for i in range(0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(X_train, y_train)
-        y_pred = my_model.predict(X_test)
-        normalized_root_mean_squared_error_base[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_base = np.mean(normalized_root_mean_squared_error_base)
-    print ("Average Root Mean Squared Error (Normalized) base",avg_RMSENORM_base)
+    my_model2 = SVR(kernel = 'linear')
+    my_model2.fit(X_train, y_train)
+    y_pred = my_model2.predict(X_test)
+    normalized_root_mean_squared_error_base = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[0] = normalized_root_mean_squared_error_base
+    print ("Average Root Mean Squared Error for SVC (Normalized)",normalized_root_mean_squared_error_base)
+
+    figSVRbase = plt.figure('Base Feature Selection SVR')
+    plt.scatter(y_test, y_pred, color = 'blue')
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.xlabel('Actual Value')
+    plt.ylabel('Predicted Value')
+    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): ',  normalized_root_mean_squared_error_base)
+    figSVRbase.set_size_inches(10, 10)
+    figSVRbase.savefig("UNF_BASE_SVR.png", dpi = 600)
+
+    my_model2.fit(newTrain_90.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_90.to_numpy())
+    normalized_root_mean_squared_error_feat90 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[1] = normalized_root_mean_squared_error_feat90
+    if (abs(normalized_root_mean_squared_error_feat90-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 90 percent of features",normalized_root_mean_squared_error_feat90)
+
+    my_model2.fit(newTrain_80.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_80.to_numpy())
+    normalized_root_mean_squared_error_feat80 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[2] = normalized_root_mean_squared_error_feat80
+    if (abs(normalized_root_mean_squared_error_feat80-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 80 percent of features",normalized_root_mean_squared_error_feat80)
+
+    my_model2.fit(newTrain_70.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_70.to_numpy())
+    normalized_root_mean_squared_error_feat70 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[3] = normalized_root_mean_squared_error_feat70
+    if (abs(normalized_root_mean_squared_error_feat70-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 70 percent of features",normalized_root_mean_squared_error_feat70)
+
+    my_model2.fit(newTrain_60.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_60.to_numpy())
+    normalized_root_mean_squared_error_feat60 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[4] = normalized_root_mean_squared_error_feat60
+    if (abs(normalized_root_mean_squared_error_feat60-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 60 percent of features",normalized_root_mean_squared_error_feat60)
+
+    my_model2.fit(newTrain_50.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_50.to_numpy())
+    normalized_root_mean_squared_error_feat50 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[5] = normalized_root_mean_squared_error_feat50
+    if (abs(normalized_root_mean_squared_error_feat50-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 50 percent of features",normalized_root_mean_squared_error_feat50)
+
+    my_model2.fit(newTrain_40.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_40.to_numpy())
+    normalized_root_mean_squared_error_feat40 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[6] = normalized_root_mean_squared_error_feat40
+    if (abs(normalized_root_mean_squared_error_feat40-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 40 percent of features",normalized_root_mean_squared_error_feat40)
+
     
+    my_model2.fit(newTrain_30.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_30.to_numpy())
+    normalized_root_mean_squared_error_feat30 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[7] = normalized_root_mean_squared_error_feat30
+    if (abs(normalized_root_mean_squared_error_feat30-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 30 percent of features",normalized_root_mean_squared_error_feat30)
 
-    for i in range(0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_90, y_train)
-        y_pred = my_model.predict(newTest_90)
-        normalized_root_mean_squared_error_feat90[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat90 = np.mean(normalized_root_mean_squared_error_feat90)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat90) <= 0.001 ):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 90",avg_RMSENORM_feat90)
+    
+    fig4 =  plt.figure('Top 30 percent Feature Selection')
+    plt.scatter(y_test, y_pred, color = 'blue')
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.xlabel('Actual Value')
+    plt.ylabel('Predicted Value')
+    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): ',  normalized_root_mean_squared_error_feat30)
+    fig4.set_size_inches(10, 10)
+    fig4.savefig("UNF_SVR_optimal.png", dpi = 600)
 
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_80, y_train)
-        y_pred = my_model.predict(newTest_80)
-        normalized_root_mean_squared_error_feat80[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat80 = np.mean(normalized_root_mean_squared_error_feat80)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat80) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 80",avg_RMSENORM_feat80)
+    my_model2.fit(newTrain_20.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_20.to_numpy())
+    normalized_root_mean_squared_error_feat20 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[8] = normalized_root_mean_squared_error_feat20
+    if (abs(normalized_root_mean_squared_error_feat20-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 20 percent of features",normalized_root_mean_squared_error_feat20)
 
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_70, y_train)
-        y_pred = my_model.predict(newTest_70)
-        normalized_root_mean_squared_error_feat70[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat70 = np.mean(normalized_root_mean_squared_error_feat70)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat70) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 70",avg_RMSENORM_feat70)
-
-    for i in range(0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_60, y_train)
-        y_pred = my_model.predict(newTest_60)
-        normalized_root_mean_squared_error_feat60[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat60 = np.mean(normalized_root_mean_squared_error_feat60)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat60) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 60",avg_RMSENORM_feat60)
-
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_50, y_train)
-        y_pred = my_model.predict(newTest_50)
-        normalized_root_mean_squared_error_feat50[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat50 = np.mean(normalized_root_mean_squared_error_feat50)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat50) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 50",avg_RMSENORM_feat50)
-
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_40, y_train)
-        y_pred = my_model.predict(newTest_40)
-        normalized_root_mean_squared_error_feat40[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat40 = np.mean(normalized_root_mean_squared_error_feat40)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat40) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 40",avg_RMSENORM_feat40)
-
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_30,y_train)
-        y_pred = my_model.predict(newTest_30)
-        normalized_root_mean_squared_error_feat30[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat30 = np.mean(normalized_root_mean_squared_error_feat30)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat30) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 30",avg_RMSENORM_feat30)
-
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_20, y_train)
-        y_pred = my_model.predict(newTest_20)
-        normalized_root_mean_squared_error_feat20[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat20 = np.mean(normalized_root_mean_squared_error_feat20)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat20) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 20",avg_RMSENORM_feat20)
-
-    for i in range (0, 10, 1):
-        my_model = KNeighborsRegressor(n_neighbors = K)
-        my_model.fit(newTrain_10, y_train)
-        y_pred = my_model.predict(newTest_10)
-        normalized_root_mean_squared_error_feat10[i] = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
-    avg_RMSENORM_feat10 = np.mean(normalized_root_mean_squared_error_feat10)
-    if (abs (avg_RMSENORM_base - avg_RMSENORM_feat10) <= 0.001):
-        print("Optimal")
-    print ("Average Root Mean Squared Error (Normalized) top 10",avg_RMSENORM_feat10)
+    my_model2.fit(newTrain_10.to_numpy(), y_train)
+    y_pred = my_model2.predict(newTest_10.to_numpy())
+    normalized_root_mean_squared_error_feat10 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
+    RMSE_SVR[9] = normalized_root_mean_squared_error_feat10
+    if (abs(normalized_root_mean_squared_error_feat10-normalized_root_mean_squared_error_base) <= 0.001):
+        print ("Optimal")
+    print ("Average Root Mean Squared Error for top 10 percent of features",normalized_root_mean_squared_error_feat10)
+ 
+    
+    fig5 =  plt.figure('Top 10 percent Feature Selection')
+    plt.scatter(y_test, y_pred, color = 'blue')
+    diagonal = np.linspace(0, np.max(y_test), 100)
+    plt.plot(diagonal, diagonal, '-r')
+    plt.xlabel('Actual Value')
+    plt.ylabel('Predicted Value')
+    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): ',  normalized_root_mean_squared_error_feat10)
+    fig5.set_size_inches(10, 10)
+    fig5.savefig("UNF_top10_SVR.png", dpi = 600)
+    
+    RMSE_df_SVR = pd.DataFrame(RMSE_SVR)
+    RMSE_df_SVR.plot(kind = 'line', color = 'blue')
+    fig_RMSESVR = plt.gcf()
+    fig_RMSESVR.set_title("Normalized RMSE over Fraction of Features")
+    fig_RMSESVR.xlabel("Fraction of Features")
+    fig_RMSESVR.ylabel("RMSE (Normalized) ")
+    fig_RMSESVR.set_size_inches(10, 10)
+    fig_RMSESVR.savefig('RMSE_SVR.png', dpi = 600)
