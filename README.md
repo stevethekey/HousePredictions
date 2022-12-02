@@ -9,6 +9,8 @@ Before running, make sure you have the required libraries. To do this, run the c
 To run the project:  
 `python main.py`
 
+*Note*: When running the code on an Apple M1 Mac, the time for all code to run was ~8-10 minutes
+
 ### Files
 **AmesHousing.csv**: Data set for the housing
 
