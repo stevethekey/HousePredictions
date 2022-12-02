@@ -45,9 +45,6 @@ def unf():
     my_model = RandomForestRegressor(max_depth = 6)
     X_train, X_test, y_train, y_test = train_test_split (X.to_numpy(), Y.to_numpy(), test_size = 0.33, random_state =42)
 
-    #lines 42-47 were obtained from 
-    #https://towardsdatascience.com/application-of-feature-selection-techniques-in-a-regression-problem-4278e2efd503
-
     print ("Generating top 20 percent of Features")
     f_val, p_val = f_regression(X_train,y_train)
     feature_dict={'features':X.columns.tolist(),
@@ -107,6 +104,7 @@ def unf():
     f.savefig('Graphs/Top20percentFeatures.png', dpi=600)
 
     print("Generating box plot for features importance")
+    print ("Exporting Ranking of features to a CSV file")
     feature_df.to_csv("UNF_selection.csv")
     fig = plt.figure()
     boxplot = feature_df.boxplot(column = 'f_score')
@@ -138,6 +136,7 @@ def unf():
     RMSE_RFR[0] = normalized_root_mean_squared_error_base
     print ("Root Mean Squared Error (Normalized)", normalized_root_mean_squared_error_base)
     
+    '''
     print ("Generating Graph for no Feature Selection")
     fig1 = plt.figure('Base Feature Selection')
     plt.scatter(y_test, y_pred, color = 'blue')
@@ -148,7 +147,7 @@ def unf():
     plt.title('Base Feature Selection RFR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_base, tbt_rfr_end - tbt_rfr_base))
     fig1.set_size_inches(10, 10)
     fig1.savefig("Graphs/UNF_BASE_RFR.png", dpi = 600)
-    
+    '''
     print ("Training RFR with 90 percent of features")
     my_model.fit(newTrain_90.to_numpy(), y_train)
     y_pred = my_model.predict(newTest_90.to_numpy())
@@ -283,6 +282,7 @@ def unf():
     RMSE_SVR[0] = normalized_root_mean_squared_error_base
     print ("Average Root Mean Squared Error for SVC (Normalized)",normalized_root_mean_squared_error_base)
 
+    '''
     print("Beginning to make graph for SVR with no Feature Selection")
     figSVRbase = plt.figure('Base Feature Selection SVR')
     plt.scatter(y_test, y_pred, color = 'blue')
@@ -293,6 +293,7 @@ def unf():
     plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_base,  tbt_svc_base_end-tbt_svc_base))
     figSVRbase.set_size_inches(10, 10)
     figSVRbase.savefig("Graphs/UNF_BASE_SVR.png", dpi = 600)
+    '''
 
     print("Training SVC with 90 percent of features")
     my_model2.fit(newTrain_90.to_numpy(), y_train)
