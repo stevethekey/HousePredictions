@@ -3,6 +3,8 @@
 Our project for Intro to Data Mining - CIS 4930 at Florida State University
 
 ### Running the project
+Make sure you are in the HousePredictions folder
+
 Before running, make sure you have the required libraries. To do this, run the command:  
 `pip install -r requirements.txt`
 
