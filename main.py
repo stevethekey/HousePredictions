@@ -9,6 +9,7 @@ from RFR_RFE import rfr_rfe
 from SVR import svr
 from SVR_RFE import svr_rfe
 from SVR_RFE_Manual import svr_rfe_manual
+from UNF import unf
 
 if __name__ == "__main__":
     print("Cleaning data...")
@@ -39,3 +40,8 @@ if __name__ == "__main__":
     print("(this takes quite a bit of time)")
     svr_rfe_manual()
     print("Graph saved as SVR_RFE_M.png in Graphs folder!")
+
+    print("\nBeginning UNF - performing featuring selection and generating graphs")
+    print("(this takes around 10 minutes)")
+    unf()
+    print("Graphs saved in Graphs folder!")
