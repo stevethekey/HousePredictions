@@ -280,7 +280,7 @@ def unf():
     y_pred = my_model2.predict(X_test)
     normalized_root_mean_squared_error_base = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
     RMSE_SVR[0] = normalized_root_mean_squared_error_base
-    print ("Average Root Mean Squared Error for SVC (Normalized)",normalized_root_mean_squared_error_base)
+    print ("Average Root Mean Squared Error for SVR (Normalized)",normalized_root_mean_squared_error_base)
 
     '''
     print("Beginning to make graph for SVR with no Feature Selection")
@@ -295,7 +295,7 @@ def unf():
     figSVRbase.savefig("Graphs/UNF_BASE_SVR.png", dpi = 600)
     '''
 
-    print("Training SVC with 90 percent of features")
+    print("Training SVR with 90 percent of features")
     my_model2.fit(newTrain_90.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_90.to_numpy())
     normalized_root_mean_squared_error_feat90 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -304,7 +304,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 90 percent of features",normalized_root_mean_squared_error_feat90)
 
-    print("Training SVC with 80 percent of features")
+    print("Training SVR with 80 percent of features")
     my_model2.fit(newTrain_80.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_80.to_numpy())
     normalized_root_mean_squared_error_feat80 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -313,7 +313,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 80 percent of features",normalized_root_mean_squared_error_feat80)
 
-    print("Training SVC with 70 percent of features")
+    print("Training SVR with 70 percent of features")
     my_model2.fit(newTrain_70.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_70.to_numpy())
     normalized_root_mean_squared_error_feat70 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -322,7 +322,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 70 percent of features",normalized_root_mean_squared_error_feat70)
 
-    print("Training SVC with 60 percent of features")
+    print("Training SVR with 60 percent of features")
     my_model2.fit(newTrain_60.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_60.to_numpy())
     normalized_root_mean_squared_error_feat60 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -331,7 +331,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 60 percent of features",normalized_root_mean_squared_error_feat60)
 
-    print("Training SVC with 50 percent of features")
+    print("Training SVR with 50 percent of features")
     my_model2.fit(newTrain_50.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_50.to_numpy())
     normalized_root_mean_squared_error_feat50 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -340,7 +340,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 50 percent of features",normalized_root_mean_squared_error_feat50)
 
-    print("Training SVC with 40 percent of features")
+    print("Training SVR with 40 percent of features")
     my_model2.fit(newTrain_40.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_40.to_numpy())
     normalized_root_mean_squared_error_feat40 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -349,7 +349,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 40 percent of features",normalized_root_mean_squared_error_feat40)
 
-    print("Training SVC with 30 percent of features")
+    print("Training SVR with 30 percent of features")
     tbt_svc_optimal = time.time()
     my_model2.fit(newTrain_30.to_numpy(), y_train)
     tbt_svc_otpimal_end = time.time()
@@ -360,18 +360,18 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 30 percent of features",normalized_root_mean_squared_error_feat30)
 
-    print ("Plotting SVC with 30 percent of the features")
+    print ("Plotting SVR with 30 percent of the features")
     fig4 =  plt.figure('Top 30 percent Feature Selection')
     plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat30,  tbt_svc_otpimal_end-tbt_svc_optimal))
+    plt.title('Top 30% of features SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat30,  tbt_svc_otpimal_end-tbt_svc_optimal))
     fig4.set_size_inches(10, 10)
     fig4.savefig("Graphs/UNF_SVR_optimal.png", dpi = 600)
 
-    print ("Training SVC with 20 percent of the features")
+    print ("Training SVR with 20 percent of the features")
     my_model2.fit(newTrain_20.to_numpy(), y_train)
     y_pred = my_model2.predict(newTest_20.to_numpy())
     normalized_root_mean_squared_error_feat20 = math.sqrt(metrics.mean_squared_error(y_test, y_pred))/ ((y_test.max()-y_test.min()))
@@ -380,7 +380,7 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 20 percent of features",normalized_root_mean_squared_error_feat20)
 
-    print ("Training SVC with 10 percent of the features")
+    print ("Training SVR with 10 percent of the features")
     tbt_svc_top10 = time.time()
     my_model2.fit(newTrain_10.to_numpy(), y_train)
     tbt_svc_top10_end = time.time()
@@ -391,14 +391,14 @@ def unf():
         print ("Optimal")
     print ("Average Root Mean Squared Error for top 10 percent of features",normalized_root_mean_squared_error_feat10)
  
-    print ("Plotting SVC with 10 percent of the features")
+    print ("Plotting SVR with 10 percent of the features")
     fig5 =  plt.figure('Top 10 percent Feature Selection')
     plt.scatter(y_test, y_pred, color = 'blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
     plt.xlabel('Actual Value')
     plt.ylabel('Predicted Value')
-    plt.title('Base Feature Selection SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat10, tbt_svc_top10_end -tbt_svc_top10))
+    plt.title('Top 10% of features SVR\nRoot Mean Squared Error (Normalized): {}\nTraining Time: {}'.format(normalized_root_mean_squared_error_feat10, tbt_svc_top10_end -tbt_svc_top10))
     fig5.set_size_inches(10, 10)
     fig5.savefig("Graphs/UNF_top10_SVR.png", dpi = 600)
 
