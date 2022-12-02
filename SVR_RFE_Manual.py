@@ -18,7 +18,8 @@ from sklearn.svm import SVR
 warnings.filterwarnings('ignore')
 pd.options.display.max_columns = None
 
-if __name__ == "__main__":
+
+def svr_rfe_manual():
     # Open the cleaned data
     data = pd.read_csv('cleaned.csv')
 

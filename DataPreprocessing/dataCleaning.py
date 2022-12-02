@@ -1,10 +1,16 @@
+"""
+dataCleaning.py
+Cleans the AmesHousing.csv data set by replacing categorical features with ints
+and replaces missing values with the mode of that column
+"""
 import pandas as pd
 import warnings
 
 warnings.filterwarnings('ignore')
 pd.options.display.max_columns = None
 
-if __name__ == "__main__":
+
+def data_cleaning():
     # set data = the csv file
     data = pd.read_csv('AmesHousing.csv')
 
@@ -177,7 +183,7 @@ if __name__ == "__main__":
                 colname = correlation_matrix.columns[i]
                 correlated_features.add(colname)
 
-    print(correlated_features)
+    # print(correlated_features)
     for feature in correlated_features:
         data.drop(feature, axis=1, inplace=True)
 

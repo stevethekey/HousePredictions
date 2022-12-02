@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 warnings.filterwarnings('ignore')
 pd.options.display.max_columns = None
 
-if __name__ == "__main__":
+
+def svr():
     # Open the cleaned data
     data = pd.read_csv('cleaned.csv')
 
