@@ -37,11 +37,11 @@ if __name__ == "__main__":
     print("Graph saved as SVR_RFE.png in Graphs folder!")
 
     print("\nCreating graph for Support Vector Regression with Recursive Feature Elimination except the RFE is partial built ins and implemented manually...")
-    print("(this takes quite a bit of time)")
+    print("(this takes a couple minutes)")
     svr_rfe_manual()
     print("Graph saved as SVR_RFE_M.png in Graphs folder!")
 
     print("\nBeginning UNF - performing featuring selection and generating graphs")
-    print("(this takes around 10 minutes)")
+    print("(this takes a couple minutes)")
     unf()
     print("Graphs saved in Graphs folder!")
