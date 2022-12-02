@@ -1,5 +1,5 @@
 # HousePredictions
-## Project By: William Steven Matiz, Gabriel Mourad, Mariela Badillo, Benjamin Zech
+## Project By: Mariela Badillo, William Steven Matiz, Gabriel Mourad, Benjamin Zech
 Our project for Intro to Data Mining - CIS 4930 at Florida State University
 
 The report for this project is `Data Mining Report - Final.pdf`
@@ -43,7 +43,7 @@ To run the project:
 ### Libraries and Modules
 In addition to the standard python library, numpy, pandas, matplotlib, sklearn were used
 
-### Sources
+### Resources
 **Code Citation**:  
     - https://towardsdatascience.com/application-of-feature-selection-techniques-in-a-regression-problem-4278e2efd503  
     - https://machinelearningmastery.com/rfe-feature-selection-in-python/  
