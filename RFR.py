@@ -1,6 +1,8 @@
 """
 Random Forest Regressor with no feature selection
 """
+import time
+
 import numpy as np
 import pandas as pd
 import warnings
@@ -23,8 +25,10 @@ if __name__ == "__main__":
                                                         random_state=42)
 
     # Random forest regression
-    rfr = RandomForestRegressor(random_state=0)
+    rfr = RandomForestRegressor(max_depth=6)
+    start = time.perf_counter()
     rfr.fit(X_train, y_train)
+    stop = time.perf_counter()
     y_predicted = rfr.predict(X_test)
 
     # Normalized error
@@ -37,7 +41,7 @@ if __name__ == "__main__":
     plt.scatter(y_test, y_predicted, color='blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.title('Random Forest Regression with no feature selection\nFeatures: {}\nNormalized RMSE: {}'.format(len(features.columns), normalized_error))
+    plt.title('Random Forest Regression with no feature selection\nFeatures: {}\nTime to fit the model (in seconds): {:0.4}\nNormalized RMSE: {}'.format(len(features.columns), stop-start, normalized_error))
     plt.xlabel('Actual Sales Price')
     plt.ylabel('Predicted Sales Price')
     rfr_plot.set_size_inches(10, 10)

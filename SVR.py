@@ -1,6 +1,8 @@
 """
 Support Vector Regression with no feature selection
 """
+import time
+
 import numpy as np
 import pandas as pd
 import warnings
@@ -24,7 +26,9 @@ if __name__ == "__main__":
 
     # SVR
     svrModel = SVR(kernel='linear')
+    start = time.perf_counter()
     svrModel.fit(X_train, y_train)
+    stop = time.perf_counter()
     y_predicted = svrModel.predict(X_test)
 
     # Normalized error
@@ -37,7 +41,7 @@ if __name__ == "__main__":
     plt.scatter(y_test, y_predicted, color='blue')
     diagonal = np.linspace(0, np.max(y_test), 100)
     plt.plot(diagonal, diagonal, '-r')
-    plt.title('Support Vector Regression with no feature selection\nFeatures: {}\nNormalized RMSE: {}'.format(len(features.columns), normalized_error))
+    plt.title('Support Vector Regression with no feature selection\nFeatures: {}\nTime to fit the model (in seconds): {:0.4}\nNormalized RMSE: {}'.format(len(features.columns), stop-start, normalized_error))
     plt.xlabel('Actual Sales Price')
     plt.ylabel('Predicted Sales Price')
     svr_plot.set_size_inches(10, 10)
