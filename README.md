@@ -41,7 +41,7 @@ To run the project:
 In addition to the standard python library, numpy, pandas, matplotlib, sklearn were used
 
 ### Sources
-**Code Citation**:
+**Code Citation**:  
     - https://towardsdatascience.com/application-of-feature-selection-techniques-in-a-regression-problem-4278e2efd503  
     - https://machinelearningmastery.com/rfe-feature-selection-in-python/  
     - https://www.kaggle.com/code/carlmcbrideellis/recursive-feature-elimination-rfe-example/notebook  
@@ -49,7 +49,7 @@ In addition to the standard python library, numpy, pandas, matplotlib, sklearn w
     - https://towardsdatascience.com/powerful-feature-selection-with-recursive-feature-elimination-rfe-of-sklearn-23efb2cdb54e  
     - https://towardsdatascience.com/feature-selection-in-python-recursive-feature-elimination-19f1c39b8d15#:~:text=Feature%20Selection%20in%20Python%20%E2%80%94%20Recursive%20Feature%20Elimination,can%20finally%20begin.%20...%204%204.%20Conclusion%20
 
-**Sklearn documentation**:
+**Sklearn documentation**:  
     - https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html  
     - https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html  
     - https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFE.html  
